@@ -1,0 +1,38 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+# Home page
+GET     /                           controllers.Application.swagger
+GET     /api-docs/alo               controllers.ApiHelpController.getResource(path = "/api-docs/alo")
+GET     /alo                        controllers.Application.alo
+
+# Full Profile
+GET     /api-docs/profile           controllers.ApiHelpController.getResource(path = "/api-docs/profile")
+GET     /profile                    controllers.ProfileController.get
+
+# Bio
+GET     /api-docs/bio               controllers.ApiHelpController.getResource(path = "/api-docs/bio")
+GET     /bio                        controllers.BioController.get
+
+# Work History
+GET     /api-docs/jobs              controllers.ApiHelpController.getResource(path = "/api-docs/jobs")
+GET     /jobs                       controllers.JobController.get
+
+# Skills
+GET     /api-docs/skills            controllers.ApiHelpController.getResource(path = "/api-docs/skills")
+GET     /skills                     controllers.SkillController.get
+
+# Proficiencies
+GET     /api-docs/proficiencies     controllers.ApiHelpController.getResource(path = "/api-docs/proficiencies")
+GET     /proficiencies              controllers.ProficiencyController.get
+
+# Education
+GET     /api-docs/education         controllers.ApiHelpController.getResource(path = "/api-docs/education")
+GET     /education                  controllers.EducationController.get
+
+# Map static resources from the /public folder to the /assets URL path
+GET     /assets/*file               controllers.Assets.at(path="/public", file)
+
+# Swagger Endpoint
+GET     /api-docs                   controllers.ApiHelpController.getResources
