@@ -17,7 +17,7 @@ object EducationController extends Controller {
   implicit val educationFormat = format[Education]
 
   @ApiOperation(value = "Retrieves Education History", responseClass = "List[models.Education]", httpMethod = "GET")
-  def get = Action {
+  def get = CORSAction {
     Ok (
       stringify (
         toJson (

@@ -17,7 +17,7 @@ object BioController extends Controller {
   implicit val bioFormat = format[Bio]
 
   @ApiOperation(value = "Retrieves Basic Bio Info", responseClass = "models.Bio", httpMethod = "GET")
-  def get = Action {
+  def get = CORSAction {
     Ok (
       stringify (
         toJson (

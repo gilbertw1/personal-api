@@ -18,7 +18,7 @@ object JobController extends Controller {
   implicit val jobFormat = format[Job]
 
   @ApiOperation(value = "Retrieves Job History", responseClass = "models.Job", httpMethod = "GET")
-  def get = Action {
+  def get = CORSAction {
     val jobs = Job.findByUserId(Global.userId)
     val jobsWithPositions = jobs.map(j => j.copy(positions = Position.findByJobId(j.id.get)))
 

@@ -17,7 +17,7 @@ object ProficiencyController extends Controller {
   implicit val proficiencyFormat = format[Proficiency]
 
   @ApiOperation(value = "Retrieves List of Proficiencies", responseClass = "List[models.Proficiency]", httpMethod = "GET")
-  def get = Action {
+  def get = CORSAction {
     Ok (
       stringify (
         toJson (

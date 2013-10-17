@@ -17,7 +17,7 @@ object SkillController extends Controller {
   implicit val skillFormat = format[Skill]
 
   @ApiOperation(value = "Retrieves List of Skills", responseClass = "List[models.Skill]", httpMethod = "GET")
-  def get = Action {
+  def get = CORSAction {
     Ok (
       stringify (
         toJson (

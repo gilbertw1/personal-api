@@ -23,14 +23,17 @@ object ProfileController extends Controller {
   implicit val profileFormat = format[Profile]
 
   @ApiOperation(value = "Returns entire profile", responseClass = "controllers.Profile", httpMethod = "GET")
-  def get = Action {
+  def get = CORSAction {
+    val jobs = Job.findByUserId(Global.userId)
+    val jobsWithPositions = jobs.map(j => j.copy(positions = Position.findByJobId(j.id.get)))
+
     Ok (
       stringify (
         toJson (
           Profile (
             bio = Bio.findOneByUserId(Global.userId).get,
             education = Education.findByUserId(Global.userId),
-            jobs = Job.findByUserId(Global.userId),
+            jobs = jobsWithPositions,
             proficiencies = Proficiency.findByUserId(Global.userId),
             skills = Skill.findByUserId(Global.userId)
           )
