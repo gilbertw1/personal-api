@@ -6,13 +6,13 @@ CREATE TABLE `user` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,  
   `slug` varchar(50) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+);
 
 CREATE TABLE `bio` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `user_id` int(11) unsigned NOT NULL,
-  `firstname` varchar(50) DEFAULT NULL,
-  `lastname` varchar(50) DEFAULT NULL,
+  `firstname` varchar(50) NOT NULL,
+  `lastname` varchar(50) NOT NULL,
   `middlename` varchar(50) DEFAULT NULL,
   `suffix` varchar(10) DEFAULT NULL,
   `title` varchar(100) DEFAULT NULL,
@@ -23,9 +23,9 @@ CREATE TABLE `bio` (
   `twitter_username` varchar(50) DEFAULT NULL,
   `linkedin_username` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `user_bio` (`user_id`),
-  CONSTRAINT `user_bio` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  KEY `bio_user_fk` (`user_id`),
+  CONSTRAINT `bio_user_fk` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
+);
 
 CREATE TABLE `skill` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -33,18 +33,18 @@ CREATE TABLE `skill` (
   `title` varchar(50) NOT NULL DEFAULT '',
   `description` varchar(500) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `user_skill` (`user_id`),
-  CONSTRAINT `user_skill` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  KEY `skill_user_fks` (`user_id`),
+  CONSTRAINT `skill_user_fk` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
+);
 
 CREATE TABLE `proficiency` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `user_id` int(11) unsigned NOT NULL,
   `title` varchar(50) NOT NULL DEFAULT '',
   PRIMARY KEY (`id`),
-  KEY `user_proficiency` (`user_id`),
-  CONSTRAINT `user_proficiency` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  KEY `proficiency_user_fk` (`user_id`),
+  CONSTRAINT `proficiency_user_fk` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
+);
 
 CREATE TABLE `job` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -53,9 +53,9 @@ CREATE TABLE `job` (
   `start` date NOT NULL,
   `end` date DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `user_job` (`user_id`),
-  CONSTRAINT `user_job` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  KEY `job_user_fk` (`user_id`),
+  CONSTRAINT `job_user_fk` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
+);
 
 CREATE TABLE `position` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -63,9 +63,9 @@ CREATE TABLE `position` (
   `title` varchar(50) NOT NULL,
   `description` varchar(500) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `job_position` (`job_id`),
-  CONSTRAINT `job_position` FOREIGN KEY (`job_id`) REFERENCES `job` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  KEY `position_job_fk` (`job_id`),
+  CONSTRAINT `position_job_fk` FOREIGN KEY (`job_id`) REFERENCES `job` (`id`)
+);
 
 CREATE TABLE `education` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -76,9 +76,9 @@ CREATE TABLE `education` (
   `graduated_date` date DEFAULT NULL,
   `start_date` date NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `user_education` (`user_id`),
-  CONSTRAINT `user_education` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  KEY `education_user_fk` (`user_id`),
+  CONSTRAINT `education_user_fk` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
+);
 
 
 # --- !Downs

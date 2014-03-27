@@ -1,32 +1,19 @@
 package models
 
-import anorm._
-import anorm.SqlParser._
-import play.api.db._
-import play.api.Play.current
+import play.api.libs.json._
+import Annotations._
 
-object Skill {
-
-  def skill = {
-    get[Pk[Long]]("id") ~
-    get[Long]("user_id") ~
-    get[String]("title") ~
-    get[String]("description") map {
-      case id ~ userId ~ title ~ description => 
-        Skill (id, userId, title, description)
-    }
-  }
-
-  def findByUserId(userId: Long): List[Skill] = DB.withConnection { implicit conn =>
-    SQL("select * from skill where user_id = {userId}")
-      .on("userId" -> userId)
-      .as(skill *)
-  }
+object Skill extends ModelCompanion[Skill] {
+  implicit val format: Format[Skill] = Json.format[Skill]
+  val name = "Skill"
 }
 
 case class Skill (
-  id: Pk[Long] = NotAssigned,
+  id: Option[Long] = None,
+  @ApiField(required = true)
   userId: Long,
+  @ApiField(required = true)
   title: String,
+  @ApiField(required = true)
   description: String
-)
+) extends Model

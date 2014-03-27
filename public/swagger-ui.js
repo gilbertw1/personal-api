@@ -1,4 +1,4 @@
-$(function() {
+$(function(swa) {
 
 	// Helper function for vertically aligning DOM elements
 	// http://www.seodenver.com/simple-vertical-align-plugin-for-jquery/

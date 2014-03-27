@@ -1,30 +1,26 @@
 package controllers
 
+import global.Globals
 import models.Skill
+
 import play.api._
 import play.api.mvc._
-import play.api.libs.json.{Json,Format,JsNumber,JsValue,JsSuccess,JsNull,JsResult}
-import Json._
-import util.{Global,JsonHelper}
+import play.api.libs.json._
 import com.wordnik.swagger.core._
 import com.wordnik.swagger.annotations._
 
-import JsonHelper._
+import Globals.databaseModule._
+import profile.simple._
 
-@Api(value = "/skills", listingPath = "/api-docs/skills", description = "Skill Information")
-object SkillController extends Controller {
+@Api(value = "/skills", description = "Skill Information")
+object SkillController extends PersonalApiModelController(Skill) {
 
-  implicit val skillFormat = format[Skill]
-
-  @ApiOperation(value = "Retrieves List of Skills", responseClass = "List[models.Skill]", httpMethod = "GET")
-  def get = CORSAction {
-    Ok (
-      stringify (
-        toJson (
-          Skill.findByUserId(Global.userId)
-        )
-      )
-    )
+  @ApiOperation(value = "Retrieves List of Skills", response = classOf[Skill], responseContainer = "List", httpMethod = "GET")
+  def get(userSlug: Option[String]) = CORSAction {
+    withDBSession { implicit session =>
+      val slug = userSlug.getOrElse(Globals.defaultUserSlug)
+      val skills = Skills.findByUserSlug(slug)
+      Ok(toJson(skills))
+    }
   }
-  
 }

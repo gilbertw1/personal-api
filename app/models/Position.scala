@@ -1,32 +1,18 @@
 package models
 
-import anorm._
-import anorm.SqlParser._
-import play.api.db._
-import play.api.Play.current
+import play.api.libs.json._
+import Annotations._
 
-object Position {
-
-  def position = {
-    get[Pk[Long]]("id") ~
-    get[Long]("job_id") ~
-    get[String]("title") ~
-    get[Option[String]]("description") map {
-      case id ~ jobId ~ title ~ description => 
-        Position (id, jobId, title, description)
-    }
-  }
-
-  def findByJobId(jobId: Long): List[Position] = DB.withConnection { implicit conn =>
-    SQL("select * from position where job_id = {jobId}")
-      .on("jobId" -> jobId)
-      .as(position *)
-  }
+object Position extends ModelCompanion[Position] {
+  implicit val format: Format[Position] = Json.format[Position]
+  val name = "Position"
 }
 
 case class Position (
-  id: Pk[Long] = NotAssigned,
+  id: Option[Long] = None,
+  @ApiField(required = true)
   jobId: Long,
+  @ApiField(required = true)
   title: String,
-  description: Option[String]
-)
+  description: Option[String] = None
+) extends Model

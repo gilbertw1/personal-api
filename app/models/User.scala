@@ -1,36 +1,15 @@
 package models
 
-import anorm._
-import anorm.SqlParser._
-import play.api.db._
-import play.api.Play.current
+import play.api.libs.json._
+import Annotations._
 
-object User {
-
-  def user = {
-    get[Pk[Long]]("id") ~
-    get[String]("slug")  map {
-      case id ~ slug => User (id, slug)
-    }
-  }
-
-  def findBySlug(slug: String): Option[User] = DB.withConnection { implicit conn =>
-    SQL("select * from user where slug = {slug}")
-      .on("slug" -> slug)
-      .as(user *)
-      .headOption
-  }
-
-  def findById(id: Long): Option[User] = DB.withConnection { implicit conn =>
-    SQL("select * from user where id = {id}")
-      .on("id" -> id)
-      .as(user *)
-      .headOption
-  }
-
+object User extends ModelCompanion[User] {
+  implicit val format: Format[User] = Json.format[User]
+  val name = "User"
 }
 
 case class User (
-  id: Pk[Long] = NotAssigned,
+  id: Option[Long] = None,
+  @ApiField(required = true)
   slug: String
-)
+) extends Model

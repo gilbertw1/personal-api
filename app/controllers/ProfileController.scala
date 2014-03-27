@@ -1,53 +1,83 @@
 package controllers
 
-import models.{Bio,Education,Position,Job,Skill,Proficiency}
+import global.Globals
+import models._
+
 import play.api._
 import play.api.mvc._
-import play.api.libs.json.{Json,Format,JsNumber,JsValue,JsSuccess,JsNull,JsResult}
-import Json._
-import util.{Global,JsonHelper}
+import play.api.libs.json._
 import com.wordnik.swagger.core._
 import com.wordnik.swagger.annotations._
 
-import JsonHelper._
+import Globals.databaseModule._
+import profile.simple._
 
-@Api(value = "/profile", listingPath = "/api-docs/profile", description = "Full Profile")
-object ProfileController extends Controller {
+import Annotations._
+import Users._
+import Bios._
+import Jobs._
+import Positions._
+import Educations._
+import Skills._
+import Proficiencies._
 
-  implicit val bioFormat = format[Bio]
-  implicit val educationFormat = format[Education]
-  implicit val positionFormat = format[Position]
-  implicit val jobFormat = format[Job]
-  implicit val proficiencyFormat = format[Proficiency]
-  implicit val skillFormat = format[Skill]
-  implicit val profileFormat = format[Profile]
+@Api(value = "/profile", description = "Full Profile")
+object ProfileController extends PersonalApiController {
 
-  @ApiOperation(value = "Returns entire profile", responseClass = "controllers.Profile", httpMethod = "GET")
-  def get = CORSAction {
-    val jobs = Job.findByUserId(Global.userId)
-    val jobsWithPositions = jobs.map(j => j.copy(positions = Position.findByJobId(j.id.get)))
+  implicit val bioFormat = Bio.format
+  implicit val educationFormat = Education.format
+  implicit val positionFormat = Position.format
+  implicit val jobFormat = Job.format
+  implicit val proficiencyFormat = Proficiency.format
+  implicit val skillFormat = Skill.format
+  implicit val jobWithPositions = Json.format[JobWithPositions]
+  implicit val profileFormat = Json.format[Profile]  
 
-    Ok (
-      stringify (
-        toJson (
-          Profile (
-            bio = Bio.findOneByUserId(Global.userId).get,
-            education = Education.findByUserId(Global.userId),
-            jobs = jobsWithPositions,
-            proficiencies = Proficiency.findByUserId(Global.userId),
-            skills = Skill.findByUserId(Global.userId)
+  @ApiOperation(value = "Returns entire profile", response = classOf[Profile], httpMethod = "GET")
+  def get(userSlug: Option[String]) = CORSAction {
+    withDBSession { implicit session =>
+      val slug = userSlug.getOrElse(Globals.defaultUserSlug)
+
+      val profileQuery = for (
+        user <- USERS if user.slug === slug;
+        bio <- BIOS if bio.userId === user.id;
+        edu <- EDUCATIONS if edu.userId === user.id;
+        job <- JOBS if job.userId === user.id;
+        pos <- POSITIONS if pos.jobId === job.id;
+        skill <- SKILLS if skill.userId === user.id;
+        prof <- PROFICIENCIES if prof.userId === user.id
+      ) yield (user,bio,edu,job,pos,skill,prof)
+
+      val results = profileQuery.list
+
+      if(!results.isEmpty) {
+        Ok (
+          toJson (
+            Profile (
+              bio = results.head._2,
+              education = results.map(_._3).distinct,
+              jobs = JobWithPositions.extract(results.map(r => (r._4, r._5)).distinct),
+              skills = results.map(_._6).distinct,
+              proficiencies = results.map(_._7).distinct
+            )
           )
         )
-      )
-    )
+      } else {
+        NotFound        
+      }
+    }
   }
-  
 }
 
 case class Profile (
+  @ApiField(required = true)
   bio: Bio,
-  education: List[Education],
-  jobs: List[Job],
-  proficiencies: List[Proficiency],
-  skills: List[Skill]
+  @ApiField(required = true)
+  education: Seq[Education],
+  @ApiField(required = true)
+  jobs: Seq[JobWithPositions],
+  @ApiField(required = true)
+  proficiencies: Seq[Proficiency],
+  @ApiField(required = true)
+  skills: Seq[Skill]
 )

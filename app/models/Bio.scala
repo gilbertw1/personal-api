@@ -1,52 +1,28 @@
 package models
 
-import anorm._
-import anorm.SqlParser._
-import play.api.db._
-import play.api.Play.current
+import play.api.libs.json._
+import Annotations._
 
-object Bio {
-
-  def bio = {
-    get[Pk[Long]]("id") ~
-    get[Long]("user_id") ~
-    get[Option[String]]("firstname") ~
-    get[Option[String]]("lastname") ~
-    get[Option[String]]("middlename") ~
-    get[Option[String]]("suffix") ~
-    get[Option[String]]("title") ~
-    get[Option[String]]("profile") ~
-    get[Option[String]]("email") ~
-    get[Option[String]]("phone") ~
-    get[Option[String]]("github_username") ~
-    get[Option[String]]("twitter_username") ~
-    get[Option[String]]("linkedin_username") map {
-      case id ~ userId ~ firstname ~ lastname ~ middlename ~ suffix ~ title ~ profile ~ 
-            email ~ phone ~ githubUsername ~ twitterUsername ~ linkedinUsername => 
-        Bio (id, userId, firstname, lastname, middlename, suffix, title, profile, email, phone, githubUsername, twitterUsername, linkedinUsername)
-    }
-  }
-
-  def findOneByUserId(userId: Long): Option[Bio] = DB.withConnection { implicit conn =>
-    SQL("select * from bio where user_id = {userId}")
-      .on("userId" -> userId)
-      .as(bio *)
-      .headOption
-  }
+object Bio extends ModelCompanion[Bio] {
+  implicit val format: Format[Bio] = Json.format[Bio]
+  val name = "Bio"
 }
 
 case class Bio (
-  id: Pk[Long] = NotAssigned,
+  id: Option[Long] = None,
+  @ApiField(required = true)
   userId: Long,
-  firstname: Option[String],
-  lastname: Option[String],
-  middlename: Option[String],
-  suffix: Option[String],
-  title: Option[String],
-  profile: Option[String],
-  email: Option[String],
-  phone: Option[String],
-  githubUsername: Option[String],
-  twitterUsername: Option[String],
-  linkedinUsername: Option[String]
-)
+  @ApiField(required = true)
+  firstname: String,
+  @ApiField(required = true)
+  lastname: String,
+  middlename: Option[String] = None,
+  suffix: Option[String] = None,
+  title: Option[String] = None,
+  profile: Option[String] = None,
+  email: Option[String] = None,
+  phone: Option[String] = None,
+  githubUsername: Option[String] = None,
+  twitterUsername: Option[String] = None,
+  linkedinUsername: Option[String] = None
+) extends Model

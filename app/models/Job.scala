@@ -1,36 +1,21 @@
 package models
 
-import java.util.Date
-import anorm._
-import anorm.SqlParser._
-import play.api.db._
-import play.api.Play.current
+import java.sql.Date
+import play.api.libs.json._
+import Annotations._
 
-object Job {
-
-  def job = {
-    get[Pk[Long]]("id") ~
-    get[Long]("user_id") ~
-    get[String]("company") ~
-    get[Date]("start") ~
-    get[Option[Date]]("end")  map {
-      case id ~ userId ~ company ~ start ~ end => 
-        Job (id, userId, company, start, end)
-    }
-  }
-
-  def findByUserId(userId: Long): List[Job] = DB.withConnection { implicit conn =>
-    SQL("select * from job where user_id = {userId}")
-      .on("userId" -> userId)
-      .as(job *)
-  }
+object Job extends ModelCompanion[Job] {
+  implicit val format: Format[Job] = Json.format[Job]
+  val name = "Job"
 }
 
 case class Job (
-  id: Pk[Long] = NotAssigned,
+  id: Option[Long] = None,
+  @ApiField(required = true)
   userId: Long,
+  @ApiField(required = true)
   company: String,
+  @ApiField(required = true)
   start: Date,
-  end: Option[Date],
-  positions: List[Position] = List[Position]()
-)
+  end: Option[Date] = None
+) extends Model

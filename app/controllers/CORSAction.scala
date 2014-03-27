@@ -1,19 +1,19 @@
 package controllers
 
+import scala.concurrent._
 import play.api._
 import play.api.mvc._
+import play.api.libs.concurrent.Execution.Implicits.defaultContext
 
 object CORSAction {
 
-  type ResultWithHeaders = Result { def withHeaders(headers: (String, String)*): Result }
-
-  def apply(block: Request[AnyContent] => ResultWithHeaders): Action[AnyContent] = {
-    Action { request =>
-      block(request).withHeaders("Access-Control-Allow-Origin" -> "*")
+  def apply(block: Request[AnyContent] => Future[SimpleResult]): Action[AnyContent] = {
+    Action.async { request =>
+      block(request).map(_.withHeaders("Access-Control-Allow-Origin" -> "*"))
     }
   }
 
-  def apply(block: => ResultWithHeaders): Action[AnyContent] = {
+  def apply(block: => Future[SimpleResult]): Action[AnyContent] = {
     this.apply(_ => block)
   }
 

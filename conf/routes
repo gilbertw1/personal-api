@@ -4,32 +4,32 @@
 
 # Home page
 GET     /                           controllers.Application.swagger
-GET     /api-docs/alo               controllers.ApiHelpController.getResource(path = "/api-docs/alo")
+GET     /api-docs/alo               controllers.ApiHelpController.getResource(path = "/alo")
 GET     /alo                        controllers.Application.alo
 
 # Full Profile
-GET     /api-docs/profile           controllers.ApiHelpController.getResource(path = "/api-docs/profile")
-GET     /profile                    controllers.ProfileController.get
+GET     /api-docs/profile           controllers.ApiHelpController.getResource(path = "/profile")
+GET     /profile                    controllers.ProfileController.get(slug: Option[String])
 
 # Bio
-GET     /api-docs/bio               controllers.ApiHelpController.getResource(path = "/api-docs/bio")
-GET     /bio                        controllers.BioController.get
+GET     /api-docs/bio               controllers.ApiHelpController.getResource(path = "/bio")
+GET     /bio                        controllers.BioController.get(slug: Option[String])
 
 # Work History
-GET     /api-docs/jobs              controllers.ApiHelpController.getResource(path = "/api-docs/jobs")
-GET     /jobs                       controllers.JobController.get
+GET     /api-docs/jobs              controllers.ApiHelpController.getResource(path = "/jobs")
+GET     /jobs                       controllers.JobController.get(slug: Option[String])
 
 # Skills
-GET     /api-docs/skills            controllers.ApiHelpController.getResource(path = "/api-docs/skills")
-GET     /skills                     controllers.SkillController.get
+GET     /api-docs/skills            controllers.ApiHelpController.getResource(path = "/skills")
+GET     /skills                     controllers.SkillController.get(slug: Option[String])
 
 # Proficiencies
-GET     /api-docs/proficiencies     controllers.ApiHelpController.getResource(path = "/api-docs/proficiencies")
-GET     /proficiencies              controllers.ProficiencyController.get
+GET     /api-docs/proficiencies     controllers.ApiHelpController.getResource(path = "/proficiencies")
+GET     /proficiencies              controllers.ProficiencyController.get(slug: Option[String])
 
 # Education
-GET     /api-docs/education         controllers.ApiHelpController.getResource(path = "/api-docs/education")
-GET     /education                  controllers.EducationController.get
+GET     /api-docs/education         controllers.ApiHelpController.getResource(path = "/education")
+GET     /education                  controllers.EducationController.get(slug: Option[String])
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
