@@ -27,11 +27,11 @@ trait SqlModule {
     }
 
     def findById(id: Long)(implicit session: Session): Option[T] = {
-      db.where(_.id === id).firstOption
+      db.filter(_.id === id).firstOption
     }
 
     def delete(id: Long)(implicit session: Session): Boolean = {
-      val rowsDeleted = db.where(_.id === id).delete
+      val rowsDeleted = db.filter(_.id === id).delete
       rowsDeleted > 0
     }
 

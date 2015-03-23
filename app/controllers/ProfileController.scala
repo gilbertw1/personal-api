@@ -31,7 +31,7 @@ object ProfileController extends PersonalApiController {
   implicit val proficiencyFormat = Proficiency.format
   implicit val skillFormat = Skill.format
   implicit val jobWithPositions = Json.format[JobWithPositions]
-  implicit val profileFormat = Json.format[Profile]  
+  implicit val profileFormat = Json.format[Profile]
 
   @ApiOperation(value = "Returns entire profile", response = classOf[Profile], httpMethod = "GET")
   def get(userSlug: Option[String]) = CORSAction {
@@ -63,7 +63,7 @@ object ProfileController extends PersonalApiController {
           )
         )
       } else {
-        NotFound        
+        NotFound
       }
     }
   }

@@ -31,10 +31,6 @@ Database configuration (MySql)
     db.default.user=root
     db.default.pass=root
 
-Swagger base path (extenally accessible api base url)
-
-    swagger.api.basepath="http://localhost:9000"
-
 Default user slug (used if none is provided to an endpoint)
 
     default.user-slug="stevesmith"

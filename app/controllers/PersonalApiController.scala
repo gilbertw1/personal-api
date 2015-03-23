@@ -21,7 +21,7 @@ trait PersonalApiController extends Controller {
     }(Globals.sqlContext)
   }
 
-  def withJson[T](f: (T) => Future[SimpleResult])(implicit request: Request[AnyContent], format: Format[T]): Future[SimpleResult] = {
+  def withJson[T](f: (T) => Future[Result])(implicit request: Request[AnyContent], format: Format[T]): Future[Result] = {
     request.body.asJson map { json =>
       json.validate[T] map { parsedValue: T =>
         f(parsedValue)

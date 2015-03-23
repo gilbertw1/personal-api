@@ -25,7 +25,7 @@ abstract class PersonalApiModelController[T <: Model](companion: ModelCompanion[
 
   def create = CORSAction { implicit request =>
     withJson[T] { model =>
-      withDBSession { implicit session =>      
+      withDBSession { implicit session =>
         val id = sql.insert(model)
         Ok(s"""{"created": ${id}}""")
       }
@@ -58,7 +58,7 @@ abstract class PersonalApiModelController[T <: Model](companion: ModelCompanion[
             val patched = companion.patch(m, updateObj)
             sql.update(id, patched)
             Ok(Json.toJson(patched))
-          case None => 
+          case None =>
             NotFound
         }
       }

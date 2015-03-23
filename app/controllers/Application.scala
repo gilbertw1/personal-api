@@ -7,11 +7,10 @@ import play.api.mvc._
 object Application extends Controller {
 
   def swagger = Action {
-    Ok(views.html.index(Globals.swaggerBase))
+    Ok(views.html.index(Globals.githubUsername))
   }
 
   def alo = Action {
     Ok("alo")
   }
-  
 }

@@ -22,5 +22,5 @@ object EducationController extends PersonalApiModelController(Education) {
       val educations = Educations.findByUserSlug(slug)
       Ok(toJson(educations))
     }
-  }  
+  }
 }

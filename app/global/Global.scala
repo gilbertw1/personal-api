@@ -18,7 +18,7 @@ object Globals {
   val shouldLoadStartupData = Play.configuration.getBoolean("startup-data.load").get
   val dbDriver = Play.configuration.getString("db.default.driver").get
   val defaultUserSlug = Play.current.configuration.getString("default.user-slug").get
-  val swaggerBase = Play.current.configuration.getString("swagger.api.basepath").get
+  val githubUsername = Play.current.configuration.getString("github.username").get
 
   val db = Database.forDataSource(DB.getDataSource())
   val sqlContext: ExecutionContext = Akka.system.dispatchers.lookup("contexts.sql-pool")
@@ -34,7 +34,7 @@ object Global extends GlobalSettings {
 
   override def onStart(app: Application) {
     if (shouldLoadStartupData) {
-      loadStartupData(app)     
+      loadStartupData(app)
     }
   }
 
