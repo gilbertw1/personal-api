@@ -23,4 +23,11 @@ object EducationController extends PersonalApiModelController(Education) {
       Ok(toJson(educations))
     }
   }
+
+  def filtered() = CORSAction { implicit request =>
+    withDBSession { implicit session =>
+      val criterias = createFilterCriteria(request)
+      Ok(toJson(Educations.runQuery(criterias)))
+    }
+  }
 }

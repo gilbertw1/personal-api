@@ -17,5 +17,11 @@ trait PositionSqlModule { this: SqlModule with JobSqlModule =>
     def * = (id.?, jobId, title, description.?) <> ((Position.apply _).tupled, Position.unapply _)
 
     def job = foreignKey("position_job_fk", jobId, Jobs.db)(_.id)
+
+    override def filterableColumnByName = Map[String,FilterableColumn[_]] (
+      "jobId" -> FilterableColumn(jobId, LongField),
+      "title" -> FilterableColumn(title, StringField),
+      "description" -> FilterableColumn(description, StringField)
+    )
   }
 }

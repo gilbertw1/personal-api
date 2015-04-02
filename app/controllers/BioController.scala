@@ -23,4 +23,11 @@ object BioController extends PersonalApiModelController(Bio) {
       bioOpt.map(b => Ok(toJson(b))).getOrElse(NotFound)
     }
   }
+
+  def filtered() = CORSAction { implicit request =>
+    withDBSession { implicit session =>
+      val criterias = createFilterCriteria(request)
+      Ok(toJson(Bios.runQuery(criterias)))
+    }
+  }
 }

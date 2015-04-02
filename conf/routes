@@ -14,22 +14,27 @@ GET     /profile                    controllers.ProfileController.get(slug: Opti
 # Bio
 GET     /api-docs/bio               controllers.ApiHelpController.getResource(path = "/bio")
 GET     /bio                        controllers.BioController.get(slug: Option[String])
+GET     /bio/filtered              controllers.BioController.filtered()
 
 # Work History
 GET     /api-docs/jobs              controllers.ApiHelpController.getResource(path = "/jobs")
 GET     /jobs                       controllers.JobController.get(slug: Option[String])
+GET     /jobs/filtered              controllers.JobController.filtered()
 
 # Skills
 GET     /api-docs/skills            controllers.ApiHelpController.getResource(path = "/skills")
 GET     /skills                     controllers.SkillController.get(slug: Option[String])
+GET     /skills/filtered            controllers.SkillController.filtered()
 
 # Proficiencies
 GET     /api-docs/proficiencies     controllers.ApiHelpController.getResource(path = "/proficiencies")
 GET     /proficiencies              controllers.ProficiencyController.get(slug: Option[String])
+GET     /proficiencies/filtered     controllers.ProficiencyController.filtered()
 
 # Education
 GET     /api-docs/education         controllers.ApiHelpController.getResource(path = "/education")
 GET     /education                  controllers.EducationController.get(slug: Option[String])
+GET     /education/filtered         controllers.EducationController.filtered()
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)

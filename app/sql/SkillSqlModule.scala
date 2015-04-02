@@ -24,5 +24,11 @@ trait SkillSqlModule { this: SqlModule with UserSqlModule =>
     def * = (id.?, userId, title, description) <> ((Skill.apply _).tupled, Skill.unapply _)
 
     def user = foreignKey("skill_user_fk", userId, Users.db)(_.id)
+
+    override def filterableColumnByName = Map[String,FilterableColumn[_]] (
+      "userId" -> FilterableColumn(userId, LongField),
+      "title" -> FilterableColumn(title, StringField),
+      "description" -> FilterableColumn(description, StringField)
+    )
   }
 }

@@ -26,5 +26,10 @@ trait JobSqlModule { this: SqlModule with UserSqlModule =>
     def * = (id.?, userId, company, start, end.?) <> ((Job.apply _).tupled, Job.unapply _)
 
     def user = foreignKey("job_user_fk", userId, Users.db)(_.id)
+
+    override def filterableColumnByName = Map[String,FilterableColumn[_]] (
+      "userId" -> FilterableColumn(userId, LongField),
+      "company" -> FilterableColumn(company, StringField)
+    )
   }
 }

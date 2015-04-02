@@ -23,5 +23,10 @@ trait ProficiencySqlModule { this: SqlModule with UserSqlModule =>
     def * = (id.?, userId, title) <> ((Proficiency.apply _).tupled, Proficiency.unapply _)
 
     def user = foreignKey("proficiency_user_fk", userId, Users.db)(_.id)
+
+    override def filterableColumnByName = Map[String,FilterableColumn[_]] (
+      "userId" -> FilterableColumn(userId, LongField),
+      "title" -> FilterableColumn(title, StringField)
+    )
   }
 }

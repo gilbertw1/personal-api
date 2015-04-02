@@ -77,4 +77,10 @@ abstract class PersonalApiModelController[T <: Model](companion: ModelCompanion[
       }
     }
   }
+
+  def createFilterCriteria(request: Request[_]): Seq[FilterCriteria] = {
+    request.queryString.map { case (k,v) =>
+      FilterCriteria(k, v.head)
+    }.toVector
+  }
 }

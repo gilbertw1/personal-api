@@ -28,5 +28,12 @@ trait EducationSqlModule { this: SqlModule with UserSqlModule =>
     def * = (id.?, userId, school, degree.?, major.?, startDate, graduatedDate.?) <> ((Education.apply _).tupled, Education.unapply _)
 
     def user = foreignKey("education_user_fk", userId, Users.db)(_.id)
+
+    override def filterableColumnByName = Map[String,FilterableColumn[_]] (
+      "userId" -> FilterableColumn(userId, LongField),
+      "school" -> FilterableColumn(school, StringField),
+      "degree" -> FilterableColumn(degree, StringField),
+      "major" -> FilterableColumn(major, StringField)
+    )
   }
 }

@@ -35,4 +35,11 @@ object JobController extends PersonalApiModelController(Job) {
       Ok(toJson(jobsWithPositions))
     }
   }
+
+  def filtered() = CORSAction { implicit request =>
+    withDBSession { implicit session =>
+      val criterias = createFilterCriteria(request)
+      Ok(toJson(Jobs.runQuery(criterias)))
+    }
+  }
 }

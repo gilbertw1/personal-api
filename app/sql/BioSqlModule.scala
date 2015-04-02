@@ -30,10 +30,25 @@ trait BioSqlModule { this: SqlModule with UserSqlModule =>
     def githubUsername = column[String]("github_username", O.Nullable)
     def twitterUsername = column[String]("twitter_username", O.Nullable)
     def linkedinUsername = column[String]("linkedin_username", O.Nullable)
-    def * = (id.?, userId, firstname, lastname, middlename.?, 
-              suffix.?, title.?, profile.?, email.?, phone.?, 
+    def * = (id.?, userId, firstname, lastname, middlename.?,
+              suffix.?, title.?, profile.?, email.?, phone.?,
               githubUsername.?, twitterUsername.?, linkedinUsername.?) <> ((Bio.apply _).tupled, Bio.unapply _)
 
     def user = foreignKey("bio_user_fk", userId, Users.db)(_.id)
+
+    override def filterableColumnByName = Map[String,FilterableColumn[_]] (
+      "userId" -> FilterableColumn(userId, LongField),
+      "firstname" -> FilterableColumn(firstname, StringField),
+      "lastname" -> FilterableColumn(lastname, StringField),
+      "middlename" -> FilterableColumn(middlename, StringField),
+      "suffix" -> FilterableColumn(suffix, StringField),
+      "title" -> FilterableColumn(title, StringField),
+      "profile" -> FilterableColumn(profile, StringField),
+      "email" -> FilterableColumn(email, StringField),
+      "phone" -> FilterableColumn(phone, StringField),
+      "githubUsername" -> FilterableColumn(githubUsername, StringField),
+      "twitterUsername" -> FilterableColumn(twitterUsername, StringField),
+      "linkedinUsername" -> FilterableColumn(linkedinUsername, StringField)
+    )
   }
 }
