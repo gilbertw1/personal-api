@@ -1,6 +1,7 @@
 package models
 
-import java.sql.Date
+import java.util.UUID
+import org.joda.time.DateTime
 import play.api.libs.json._
 import Annotations._
 
@@ -10,12 +11,14 @@ object Job extends ModelCompanion[Job] {
 }
 
 case class Job (
-  id: Option[Long] = None,
+  id: UUID,
   @ApiField(required = true)
-  userId: Long,
+  userId: UUID,
   @ApiField(required = true)
   company: String,
   @ApiField(required = true)
-  start: Date,
-  end: Option[Date] = None
-) extends Model
+  start: DateTime,
+  end: Option[DateTime] = None
+) extends Model[Job] {
+  val companion = Job
+}

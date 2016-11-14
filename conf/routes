@@ -3,41 +3,36 @@
 # ~~~~
 
 # Home page
-GET     /                           controllers.Application.swagger
-GET     /api-docs/alo               controllers.ApiHelpController.getResource(path = "/alo")
-GET     /alo                        controllers.Application.alo
+GET     /                           @controllers.Application.swagger
+GET     /api-docs/alo               @controllers.ApiHelpController.getResource(path = "/alo")
+GET     /alo                        @controllers.Application.alo
 
 # Full Profile
-GET     /api-docs/profile           controllers.ApiHelpController.getResource(path = "/profile")
-GET     /profile                    controllers.ProfileController.get(slug: Option[String])
+GET     /api-docs/profile           @controllers.ApiHelpController.getResource(path = "/profile")
+GET     /profile                    @controllers.ProfileController.get(slug: Option[String])
 
 # Bio
-GET     /api-docs/bio               controllers.ApiHelpController.getResource(path = "/bio")
-GET     /bio                        controllers.BioController.get(slug: Option[String])
-GET     /bio/filtered              controllers.BioController.filtered()
+GET     /api-docs/bio               @controllers.ApiHelpController.getResource(path = "/bio")
+GET     /bio                        @controllers.BioController.get(slug: Option[String])
 
 # Work History
-GET     /api-docs/jobs              controllers.ApiHelpController.getResource(path = "/jobs")
-GET     /jobs                       controllers.JobController.get(slug: Option[String])
-GET     /jobs/filtered              controllers.JobController.filtered()
+GET     /api-docs/jobs              @controllers.ApiHelpController.getResource(path = "/jobs")
+GET     /jobs                       @controllers.JobController.get(slug: Option[String])
 
 # Skills
-GET     /api-docs/skills            controllers.ApiHelpController.getResource(path = "/skills")
-GET     /skills                     controllers.SkillController.get(slug: Option[String])
-GET     /skills/filtered            controllers.SkillController.filtered()
+GET     /api-docs/skills            @controllers.ApiHelpController.getResource(path = "/skills")
+GET     /skills                     @controllers.SkillController.get(slug: Option[String])
 
 # Proficiencies
-GET     /api-docs/proficiencies     controllers.ApiHelpController.getResource(path = "/proficiencies")
-GET     /proficiencies              controllers.ProficiencyController.get(slug: Option[String])
-GET     /proficiencies/filtered     controllers.ProficiencyController.filtered()
+GET     /api-docs/proficiencies     @controllers.ApiHelpController.getResource(path = "/proficiencies")
+GET     /proficiencies              @controllers.ProficiencyController.get(slug: Option[String])
 
 # Education
-GET     /api-docs/education         controllers.ApiHelpController.getResource(path = "/education")
-GET     /education                  controllers.EducationController.get(slug: Option[String])
-GET     /education/filtered         controllers.EducationController.filtered()
+GET     /api-docs/education         @controllers.ApiHelpController.getResource(path = "/education")
+GET     /education                  @controllers.EducationController.get(slug: Option[String])
 
 # Map static resources from the /public folder to the /assets URL path
-GET     /assets/*file               controllers.Assets.at(path="/public", file)
+GET     /assets/*file               @controllers.Assets.at(path="/public", file)
 
 # Swagger Endpoint
-GET     /api-docs                   controllers.ApiHelpController.getResources
+GET     /api-docs                   @controllers.ApiHelpController.getResources

@@ -1,2 +1,2 @@
-{"userId":1,"school":"The Citadel","degree":"Bachelor of Science","major":"Computer Science","startDate":1091318400000,"graduatedDate":1209600000000}
-{"userId":1,"school":"College of Charleston / The Citadel","degree":"Master of Science","major":"Computer Science","startDate":1217548800000,"graduatedDate":1304208000000}
+{"id": "0d9876f2-469b-40e0-a630-abaddf13b144", "userId":"b46f6d74-0f9b-45b0-8c6e-0722b94add03","school":"The Citadel","degree":"Bachelor of Science","major":"Computer Science","startDate":1091318400000,"graduatedDate":1209600000000}
+{"id": "dbf900bb-683e-41fd-a352-948c427b4a9b", "userId":"b46f6d74-0f9b-45b0-8c6e-0722b94add03","school":"College of Charleston / The Citadel","degree":"Master of Science","major":"Computer Science","startDate":1217548800000,"graduatedDate":1304208000000}

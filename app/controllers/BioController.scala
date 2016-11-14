@@ -1,33 +1,28 @@
 package controllers
 
 import models.Bio
+import services.ApiServices
 import global.Globals
+
+import javax.inject._
 
 import play.api._
 import play.api.mvc._
 import play.api.libs.json._
-import com.wordnik.swagger.core._
-import com.wordnik.swagger.annotations._
+import io.swagger.core._
+import io.swagger.annotations._
 
-import Globals.databaseModule._
-import profile.simple._
+import play.api.libs.concurrent.Execution.Implicits._
 
 @Api(value = "/bio", description = "Biographical Information")
-object BioController extends PersonalApiModelController(Bio) {
+class BioController @Inject() (apiServices: ApiServices) extends ApiModelController(Bio, apiServices.bioService) {
 
   @ApiOperation(value = "Retrieves Basic Bio Info", response = classOf[Bio], httpMethod = "GET")
   def get(userSlug: Option[String]) = CORSAction {
-    withDBSession { implicit session =>
-      val slug = userSlug.getOrElse(Globals.defaultUserSlug)
-      val bioOpt = Bios.findOneByUserSlug(slug)
-      bioOpt.map(b => Ok(toJson(b))).getOrElse(NotFound)
-    }
-  }
-
-  def filtered() = CORSAction { implicit request =>
-    withDBSession { implicit session =>
-      val criterias = createFilterCriteria(request)
-      Ok(toJson(Bios.runQuery(criterias)))
+    val slug = userSlug.getOrElse(Globals.defaultUserSlug)
+    apiServices.bioService.findOneByUserSlug(slug).map {
+      case Some(bio) => Ok(Json.toJson(bio))
+      case None => NotFound
     }
   }
 }

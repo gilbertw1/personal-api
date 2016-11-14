@@ -1,5 +1,6 @@
 package models
 
+import java.util.UUID
 import play.api.libs.json._
 import Annotations._
 
@@ -9,10 +10,12 @@ object Position extends ModelCompanion[Position] {
 }
 
 case class Position (
-  id: Option[Long] = None,
+  id: UUID,
   @ApiField(required = true)
-  jobId: Long,
+  jobId: UUID,
   @ApiField(required = true)
   title: String,
   description: Option[String] = None
-) extends Model
+) extends Model[Position] {
+  val companion = Position
+}

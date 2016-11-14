@@ -1,5 +1,6 @@
 package models
 
+import java.util.UUID
 import play.api.libs.json._
 import Annotations._
 
@@ -9,9 +10,11 @@ object Proficiency extends ModelCompanion[Proficiency] {
 }
 
 case class Proficiency (
-  id: Option[Long] = None,
+  id: UUID,
   @ApiField(required = true)
-  userId: Long,
+  userId: UUID,
   @ApiField(required = true)
   title: String
-) extends Model
+) extends Model[Proficiency] {
+  val companion = Proficiency
+}
