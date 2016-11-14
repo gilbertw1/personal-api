@@ -14,9 +14,8 @@ class ProficiencyService(database: Database) extends DatabaseService(Proficienci
 
   def findByUserSlug(slug: String): Future[Seq[Proficiency]] = {
     val query = for {
-      p <- PROFICIENCY
-      u <- USER
-      if u.id === p.id && u.slug === slug } yield (p)
+      u <- USER if u.slug === slug
+      p <- PROFICIENCY if u.id === p.userId } yield (p)
 
     db.run(query.result)
   }

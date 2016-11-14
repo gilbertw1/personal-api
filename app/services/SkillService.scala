@@ -13,10 +13,10 @@ import Users._
 class SkillService(database: Database) extends DatabaseService(Skills, database) {
 
   def findByUserSlug(slug: String): Future[Seq[Skill]] = {
-    val query = for { (s, u) <-
-                      SKILL join
-                      USER on (_.userId === _.id)
-                      if u.slug === slug } yield (s)
+    val query = for {
+      u <- USER if u.slug === slug
+      s <- SKILL if s.userId === u.id } yield (s)
+
     db.run(query.result)
   }
 }

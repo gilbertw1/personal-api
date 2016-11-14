@@ -12,6 +12,7 @@ object Profile {
   implicit val format = Json.format[Profile]
 
   def extract(results: Seq[(User, Bio, Education, Job, Position, Skill, Proficiency)]): Option[Profile] = {
+    println("Extracting Results: " + results)
     if (results.nonEmpty) {
       Some(
         Profile (

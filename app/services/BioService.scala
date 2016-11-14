@@ -12,10 +12,9 @@ import Users._
 class BioService(database: Database) extends DatabaseService(Bios, database) {
 
   def findOneByUserSlug(slug: String): Future[Option[Bio]] = {
-    val query = for { (b, u) <-
-                      BIO join
-                      USER on (_.userId === _.id)
-                        if u.slug === slug } yield (b)
+    val query = for {
+      u <- USER if u.slug === slug
+      b <- BIO if b.userId === u.id } yield (b)
 
     db.run(query.result.headOption)
   }

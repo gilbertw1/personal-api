@@ -16,6 +16,7 @@ class StartupLoader @Inject() (apiServices: ApiServices) {
 
   println("RUNNING STARTUP LOADER")
 
+  // TODO: Abosolutely Horrendous
   Future({
     Thread.sleep(5000L)
     if (Globals.shouldLoadStartupData) {

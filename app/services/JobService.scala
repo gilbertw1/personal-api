@@ -14,11 +14,11 @@ import Positions._
 class JobService(database: Database) extends DatabaseService(Jobs, database) {
 
   def findJobsWithPositionsBySlug(slug: String)(implicit ec: ExecutionContext): Future[Seq[JobWithPositions]] = {
-    val query = for { ((u, j), p) <-
-                      USER join
-                      JOB on (_.id === _.userId) join
-                      POSITION on (_._2.id === _.jobId)
-                      if u.slug === slug } yield (j, p)
+    val query = for {
+      u <- USER if u.slug === slug
+      j <- JOB if j.userId === u.id
+      p <- POSITION if p.jobId === j.id } yield (j, p)
+
     db.run(query.result).map(JobWithPositions.extract)
   }
 
